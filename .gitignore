@@ -93,5 +93,8 @@ temp/
 # package-lock.json
 # yarn.lock
 
+# Legacy frontend directory (React app - no longer used)
+frontend/
+
 # Misc
 *.pem

@@ -10,9 +10,11 @@ const nextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
-  // For development, we need server-side functionality for i18n
-  // Remove output: "export" to enable middleware and internationalization
-  trailingSlash: false,
+  // Production configuration for Cloudflare Pages
+  output: "export",
+  trailingSlash: true,
+  skipTrailingSlashRedirect: true,
+  distDir: "dist",
   images: {
     unoptimized: true,
     domains: ["localhost"],
@@ -31,6 +33,8 @@ const nextConfig = {
     NEXT_PUBLIC_SUPPORTED_LOCALES: "ar,en",
     NEXT_PUBLIC_RTL_SUPPORT: "true",
   },
+  // Static export configuration - no middleware in static mode
+  // Internationalization will be handled client-side
 };
 
 module.exports = withNextIntl(nextConfig);
