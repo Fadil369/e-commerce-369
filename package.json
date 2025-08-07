@@ -8,7 +8,15 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "type-check": "tsc --noEmit"
+    "type-check": "tsc --noEmit",
+    "deploy:staging": "./deploy-cloudflare.sh staging",
+    "deploy:production": "./deploy-cloudflare.sh production",
+    "cf:login": "wrangler login",
+    "cf:deploy": "wrangler pages deploy dist --project-name=e-commerce-369",
+    "cf:tail": "wrangler tail",
+    "cf:kv:list": "wrangler kv:namespace list",
+    "cf:d1:list": "wrangler d1 list",
+    "cf:r2:list": "wrangler r2 bucket list"
   },
   "keywords": [
     "e-commerce",
@@ -37,6 +45,7 @@
     "eslint-config-next": "^15.4.6",
     "postcss": "^8.5.6",
     "tailwindcss": "^4.1.11",
-    "typescript": "^5.9.2"
+    "typescript": "^5.9.2",
+    "wrangler": "^3.89.0"
   }
 }
