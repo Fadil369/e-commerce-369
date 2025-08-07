@@ -1,0 +1,28 @@
+{
+  "name": "e-commerce-369",
+  "version": "1.0.0",
+  "description": "Saudi market-focused women's clothing e-commerce platform",
+  "main": "index.js",
+  "scripts": {
+    "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
+    "dev:frontend": "cd frontend && npm run dev",
+    "dev:backend": "cd backend && npm run dev",
+    "build": "npm run build:frontend && npm run build:backend",
+    "build:frontend": "cd frontend && npm run build",
+    "build:backend": "cd backend && npm run build",
+    "start": "cd backend && npm start",
+    "install:all": "npm install && cd frontend && npm install && cd ../backend && npm install"
+  },
+  "keywords": [
+    "e-commerce",
+    "saudi",
+    "women-clothing",
+    "arabic",
+    "payment-integration"
+  ],
+  "author": "Mohamed El Fadil Abuagla",
+  "license": "MIT",
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
