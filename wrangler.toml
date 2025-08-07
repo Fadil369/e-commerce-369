@@ -3,83 +3,60 @@ name = "e-commerce-369"
 compatibility_date = "2024-12-01"
 pages_build_output_dir = ".next"
 
+# Basic D1 database binding for schema setup
+[[d1_databases]]
+binding = "DB"
+database_name = "brainsait-db"
+database_id = "79e8eb7a-1ada-4016-b51c-2cc631405467"
+
 [env.production]
 name = "e-commerce-369"
 compatibility_date = "2024-12-01"
 
-[env.staging]
-name = "e-commerce-369-staging"
+[env.preview]
+name = "e-commerce-369-preview"
 compatibility_date = "2024-12-01"
 
 # Environment variables for production
 [env.production.vars]
 NODE_ENV = "production"
 NEXT_PUBLIC_SITE_URL = "https://e-commerce-369.pages.dev"
-NEXT_PUBLIC_API_URL = "https://api.e-commerce-369.workers.dev"
+NEXT_PUBLIC_API_URL = "https://e-commerce-369.pages.dev"
 
-# Environment variables for staging
-[env.staging.vars]
-NODE_ENV = "staging"
-NEXT_PUBLIC_SITE_URL = "https://e-commerce-369-staging.pages.dev"
-NEXT_PUBLIC_API_URL = "https://api-staging.e-commerce-369.workers.dev"
+# Environment variables for preview
+[env.preview.vars]
+NODE_ENV = "preview"
+NEXT_PUBLIC_SITE_URL = "https://e-commerce-369-preview.pages.dev"
+NEXT_PUBLIC_API_URL = "https://e-commerce-369-preview.pages.dev"
 
 # KV namespaces for session storage and caching
 [[env.production.kv_namespaces]]
 binding = "SESSIONS"
-id = "your-sessions-kv-namespace-id"
-preview_id = "your-sessions-kv-preview-id"
+id = "7cc8d27d9d334ad3b014328dc743c106"
+preview_id = "7cc8d27d9d334ad3b014328dc743c106"
 
 [[env.production.kv_namespaces]]
 binding = "CACHE"
-id = "your-cache-kv-namespace-id"
-preview_id = "your-cache-kv-preview-id"
+id = "35b31bbbdb6340eaaf79cbd9c10ec958"
+preview_id = "35b31bbbdb6340eaaf79cbd9c10ec958"
 
-[[env.staging.kv_namespaces]]
+[[env.preview.kv_namespaces]]
 binding = "SESSIONS"
-id = "your-sessions-kv-staging-id"
-preview_id = "your-sessions-kv-staging-preview-id"
+id = "7cc8d27d9d334ad3b014328dc743c106"
+preview_id = "7cc8d27d9d334ad3b014328dc743c106"
 
-[[env.staging.kv_namespaces]]
+[[env.preview.kv_namespaces]]
 binding = "CACHE"
-id = "your-cache-kv-staging-id"
-preview_id = "your-cache-kv-staging-preview-id"
+id = "35b31bbbdb6340eaaf79cbd9c10ec958"
+preview_id = "35b31bbbdb6340eaaf79cbd9c10ec958"
 
 # D1 Database for product data and user management
 [[env.production.d1_databases]]
 binding = "DB"
-database_name = "e-commerce-369-prod"
-database_id = "your-d1-production-database-id"
+database_name = "brainsait-db"
+database_id = "79e8eb7a-1ada-4016-b51c-2cc631405467"
 
-[[env.staging.d1_databases]]
+[[env.preview.d1_databases]]
 binding = "DB"
-database_name = "e-commerce-369-staging"
-database_id = "your-d1-staging-database-id"
-
-# R2 bucket for product images and static assets
-[[env.production.r2_buckets]]
-binding = "ASSETS"
-bucket_name = "e-commerce-369-assets-prod"
-
-[[env.staging.r2_buckets]]
-binding = "ASSETS"
-bucket_name = "e-commerce-369-assets-staging"
-
-# Durable Objects for real-time cart management
-[[env.production.durable_objects]]
-name = "CartManager"
-class_name = "CartManager"
-script_name = "e-commerce-369-cart-worker"
-
-[[env.staging.durable_objects]]
-name = "CartManager"
-class_name = "CartManager"
-script_name = "e-commerce-369-cart-worker-staging"
-
-# Workers routes for API endpoints
-[[env.production.routes]]
-pattern = "api.e-commerce-369.com/*"
-zone_name = "e-commerce-369.com"
-
-[[env.staging.routes]]
-pattern = "api-staging.e-commerce-369.com/*"
-zone_name = "e-commerce-369.com"
+database_name = "brainsait-db"
+database_id = "79e8eb7a-1ada-4016-b51c-2cc631405467"

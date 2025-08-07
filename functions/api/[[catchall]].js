@@ -1,22 +1,22 @@
 // Cloudflare Worker for API routes
 // This file handles serverless API endpoints for the e-commerce platform
 
-import { 
-  validateProduct, 
-  validateOrder,
-  sanitizeInput,
-  RateLimit,
-  validateEmail,
-  validatePassword
-} from '../utils/validation.js';
-import { 
-  JWTAuth, 
-  requireAuth, 
-  requireAdmin,
+import {
   hashPassword,
-  verifyPassword 
-} from '../utils/auth.js';
-import { PaymentProcessor } from '../utils/payments.js';
+  JWTAuth,
+  requireAdmin,
+  requireAuth,
+  verifyPassword,
+} from "../utils/auth.js";
+import { PaymentProcessor } from "../utils/payments.js";
+import {
+  RateLimit,
+  sanitizeInput,
+  validateEmail,
+  validateOrder,
+  validatePassword,
+  validateProduct,
+} from "../utils/validation.js";
 
 export default {
   async fetch(request, env) {
@@ -80,12 +80,19 @@ async function handleProducts(request, env, corsHeaders) {
 
   // Rate limiting
   const rateLimit = new RateLimit(env.SESSIONS);
-  const clientIP = request.headers.get('CF-Connecting-IP') || 'unknown';
-  const rateLimitResult = await rateLimit.checkLimit(`products:${clientIP}`, 60, 60000);
-  
+  const clientIP = request.headers.get("CF-Connecting-IP") || "unknown";
+  const rateLimitResult = await rateLimit.checkLimit(
+    `products:${clientIP}`,
+    60,
+    60000
+  );
+
   if (!rateLimitResult.allowed) {
     return new Response(
-      JSON.stringify({ error: 'Rate limit exceeded', resetTime: rateLimitResult.resetTime }),
+      JSON.stringify({
+        error: "Rate limit exceeded",
+        resetTime: rateLimitResult.resetTime,
+      }),
       { status: 429, headers: corsHeaders }
     );
   }
@@ -95,19 +102,22 @@ async function handleProducts(request, env, corsHeaders) {
       // Get single product
       const product = await getProductFromDB(productId, env.DB);
       if (!product) {
-        return new Response(
-          JSON.stringify({ error: 'Product not found' }), 
-          { status: 404, headers: corsHeaders }
-        );
+        return new Response(JSON.stringify({ error: "Product not found" }), {
+          status: 404,
+          headers: corsHeaders,
+        });
       }
       return new Response(JSON.stringify(product), { headers: corsHeaders });
     }
-    
+
     // Get all products with pagination and validation
     const page = Math.max(1, parseInt(url.searchParams.get("page")) || 1);
-    const limit = Math.min(100, Math.max(1, parseInt(url.searchParams.get("limit")) || 20));
-    const category = sanitizeInput(url.searchParams.get("category") || '');
-    const search = sanitizeInput(url.searchParams.get("search") || '');
+    const limit = Math.min(
+      100,
+      Math.max(1, parseInt(url.searchParams.get("limit")) || 20)
+    );
+    const category = sanitizeInput(url.searchParams.get("category") || "");
+    const search = sanitizeInput(url.searchParams.get("search") || "");
 
     const products = await getProductsFromDB(
       { page, limit, category, search },
@@ -126,12 +136,12 @@ async function handleProducts(request, env, corsHeaders) {
     try {
       const newProduct = await request.json();
       const created = await createProductInDB(newProduct, env.DB);
-      
+
       if (!created.success) {
-        return new Response(
-          JSON.stringify({ error: created.error }),
-          { status: 400, headers: corsHeaders }
-        );
+        return new Response(JSON.stringify({ error: created.error }), {
+          status: 400,
+          headers: corsHeaders,
+        });
       }
 
       return new Response(JSON.stringify(created), {
@@ -139,11 +149,11 @@ async function handleProducts(request, env, corsHeaders) {
         headers: corsHeaders,
       });
     } catch (error) {
-      console.error('Product creation error:', error.message);
-      return new Response(
-        JSON.stringify({ error: 'Invalid JSON data' }),
-        { status: 400, headers: corsHeaders }
-      );
+      console.error("Product creation error:", error.message);
+      return new Response(JSON.stringify({ error: "Invalid JSON data" }), {
+        status: 400,
+        headers: corsHeaders,
+      });
     }
   }
 
@@ -194,17 +204,17 @@ async function handleOrders(request, env, corsHeaders) {
 
     try {
       const orderData = await request.json();
-      
+
       // Add user ID to order
       orderData.user_id = user.userId;
-      
+
       // Validate order data
       const validation = validateOrder(orderData);
       if (!validation.valid) {
         return new Response(
-          JSON.stringify({ 
-            error: 'Invalid order data', 
-            details: validation.errors 
+          JSON.stringify({
+            error: "Invalid order data",
+            details: validation.errors,
           }),
           { status: 400, headers: corsHeaders }
         );
@@ -219,9 +229,9 @@ async function handleOrders(request, env, corsHeaders) {
 
         if (!order.success) {
           return new Response(
-            JSON.stringify({ 
-              error: 'Failed to create order', 
-              details: order.error 
+            JSON.stringify({
+              error: "Failed to create order",
+              details: order.error,
             }),
             { status: 500, headers: corsHeaders }
           );
@@ -230,18 +240,21 @@ async function handleOrders(request, env, corsHeaders) {
         // Clear cart
         await clearCartInKV(orderData.cartId, env.SESSIONS);
 
-        return new Response(JSON.stringify({
-          ...order,
-          payment: {
-            transaction_id: paymentResult.transactionId,
-            status: paymentResult.status
+        return new Response(
+          JSON.stringify({
+            ...order,
+            payment: {
+              transaction_id: paymentResult.transactionId,
+              status: paymentResult.status,
+            },
+          }),
+          {
+            status: 201,
+            headers: corsHeaders,
           }
-        }), {
-          status: 201,
-          headers: corsHeaders,
-        });
+        );
       }
-      
+
       return new Response(
         JSON.stringify({
           error: "Payment failed",
@@ -253,11 +266,11 @@ async function handleOrders(request, env, corsHeaders) {
         }
       );
     } catch (error) {
-      console.error('Order processing error:', error.message);
-      return new Response(
-        JSON.stringify({ error: 'Invalid request data' }),
-        { status: 400, headers: corsHeaders }
-      );
+      console.error("Order processing error:", error.message);
+      return new Response(JSON.stringify({ error: "Invalid request data" }), {
+        status: 400,
+        headers: corsHeaders,
+      });
     }
   }
 
@@ -285,14 +298,18 @@ async function handleAuth(request, env, corsHeaders) {
 
   // Rate limiting for auth endpoints
   const rateLimit = new RateLimit(env.SESSIONS);
-  const clientIP = request.headers.get('CF-Connecting-IP') || 'unknown';
-  const rateLimitResult = await rateLimit.checkLimit(`auth:${clientIP}`, 10, 900000); // 10 attempts per 15 minutes
-  
+  const clientIP = request.headers.get("CF-Connecting-IP") || "unknown";
+  const rateLimitResult = await rateLimit.checkLimit(
+    `auth:${clientIP}`,
+    10,
+    900000
+  ); // 10 attempts per 15 minutes
+
   if (!rateLimitResult.allowed) {
     return new Response(
-      JSON.stringify({ 
-        error: 'Too many authentication attempts', 
-        resetTime: rateLimitResult.resetTime 
+      JSON.stringify({
+        error: "Too many authentication attempts",
+        resetTime: rateLimitResult.resetTime,
       }),
       { status: 429, headers: corsHeaders }
     );
@@ -302,18 +319,18 @@ async function handleAuth(request, env, corsHeaders) {
     try {
       const loginData = await request.json();
       const loginResult = await authenticateUser(loginData, env.DB);
-      
+
       const statusCode = loginResult.success ? 200 : 401;
-      return new Response(JSON.stringify(loginResult), { 
-        status: statusCode, 
-        headers: corsHeaders 
+      return new Response(JSON.stringify(loginResult), {
+        status: statusCode,
+        headers: corsHeaders,
       });
     } catch (error) {
-      console.error('Login error:', error.message);
-      return new Response(
-        JSON.stringify({ error: 'Invalid request data' }),
-        { status: 400, headers: corsHeaders }
-      );
+      console.error("Login error:", error.message);
+      return new Response(JSON.stringify({ error: "Invalid request data" }), {
+        status: 400,
+        headers: corsHeaders,
+      });
     }
   }
 
@@ -321,18 +338,18 @@ async function handleAuth(request, env, corsHeaders) {
     try {
       const registerData = await request.json();
       const registerResult = await createUser(registerData, env.DB);
-      
+
       const statusCode = registerResult.success ? 201 : 400;
       return new Response(JSON.stringify(registerResult), {
         status: statusCode,
         headers: corsHeaders,
       });
     } catch (error) {
-      console.error('Registration error:', error.message);
-      return new Response(
-        JSON.stringify({ error: 'Invalid request data' }),
-        { status: 400, headers: corsHeaders }
-      );
+      console.error("Registration error:", error.message);
+      return new Response(JSON.stringify({ error: "Invalid request data" }), {
+        status: 400,
+        headers: corsHeaders,
+      });
     }
   }
 
@@ -375,8 +392,8 @@ async function handlePayments(request, env, corsHeaders) {
     if (!paymentData.method || !paymentData.amount || !paymentData.orderId) {
       return new Response(
         JSON.stringify({
-          error: 'Missing required payment data',
-          required: ['method', 'amount', 'orderId']
+          error: "Missing required payment data",
+          required: ["method", "amount", "orderId"],
         }),
         { status: 400, headers: corsHeaders }
       );
@@ -400,24 +417,23 @@ async function handlePayments(request, env, corsHeaders) {
       return new Response(
         JSON.stringify({
           error: "Unsupported payment method",
-          supportedMethods: ['mada', 'stc_pay', 'stripe', 'paypal']
+          supportedMethods: ["mada", "stc_pay", "stripe", "paypal"],
         }),
         { status: 400, headers: corsHeaders }
       );
     }
 
     const statusCode = result.success ? 200 : 400;
-    return new Response(JSON.stringify(result), { 
-      status: statusCode, 
-      headers: corsHeaders 
+    return new Response(JSON.stringify(result), {
+      status: statusCode,
+      headers: corsHeaders,
     });
-
   } catch (error) {
-    console.error('Payment processing error:', error.message);
-    return new Response(
-      JSON.stringify({ error: 'Invalid payment request' }),
-      { status: 400, headers: corsHeaders }
-    );
+    console.error("Payment processing error:", error.message);
+    return new Response(JSON.stringify({ error: "Invalid payment request" }), {
+      status: 400,
+      headers: corsHeaders,
+    });
   }
 }
 
@@ -462,22 +478,22 @@ async function processPayment(paymentData, env) {
 
 async function processMadaPayment(paymentData, env) {
   const processor = new PaymentProcessor(env);
-  return await processor.processPayment({ ...paymentData, method: 'mada' });
+  return await processor.processPayment({ ...paymentData, method: "mada" });
 }
 
 async function processStcPayment(paymentData, env) {
   const processor = new PaymentProcessor(env);
-  return await processor.processPayment({ ...paymentData, method: 'stc_pay' });
+  return await processor.processPayment({ ...paymentData, method: "stc_pay" });
 }
 
 async function processStripePayment(paymentData, env) {
   const processor = new PaymentProcessor(env);
-  return await processor.processPayment({ ...paymentData, method: 'stripe' });
+  return await processor.processPayment({ ...paymentData, method: "stripe" });
 }
 
 async function processPayPalPayment(paymentData, env) {
   const processor = new PaymentProcessor(env);
-  return await processor.processPayment({ ...paymentData, method: 'paypal' });
+  return await processor.processPayment({ ...paymentData, method: "paypal" });
 }
 
 // Database operation implementations
@@ -486,20 +502,22 @@ async function createProductInDB(product, db) {
     // Validate product data
     const validation = validateProduct(product);
     if (!validation.valid) {
-      throw new Error(`Validation failed: ${validation.errors.join(', ')}`);
+      throw new Error(`Validation failed: ${validation.errors.join(", ")}`);
     }
 
     const result = await db
-      .prepare(`
-        INSERT INTO products 
+      .prepare(
+        `
+        INSERT INTO products
         (name_ar, name_en, description_ar, description_en, price, category, sku, stock_quantity, image_urls, sizes, colors, featured)
         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-      `)
+      `
+      )
       .bind(
         product.name_ar,
         product.name_en,
-        product.description_ar || '',
-        product.description_en || '',
+        product.description_ar || "",
+        product.description_en || "",
         product.price,
         product.category,
         product.sku,
@@ -511,13 +529,13 @@ async function createProductInDB(product, db) {
       )
       .run();
 
-    return { 
-      success: true, 
+    return {
+      success: true,
       id: result.meta.last_row_id,
-      product: { ...product, id: result.meta.last_row_id }
+      product: { ...product, id: result.meta.last_row_id },
     };
   } catch (error) {
-    console.error('Create product error:', error.message);
+    console.error("Create product error:", error.message);
     return { success: false, error: error.message };
   }
 }
@@ -527,21 +545,26 @@ async function createOrderInDB(orderData, db) {
     // Validate order data
     const validation = validateOrder(orderData);
     if (!validation.valid) {
-      throw new Error(`Order validation failed: ${validation.errors.join(', ')}`);
+      throw new Error(
+        `Order validation failed: ${validation.errors.join(", ")}`
+      );
     }
 
     // Calculate total amount
-    const totalAmount = orderData.items.reduce((sum, item) => 
-      sum + (item.price * item.quantity), 0
+    const totalAmount = orderData.items.reduce(
+      (sum, item) => sum + item.price * item.quantity,
+      0
     );
 
     // Create order
     const orderResult = await db
-      .prepare(`
-        INSERT INTO orders 
+      .prepare(
+        `
+        INSERT INTO orders
         (user_id, total_amount, payment_method, shipping_address, billing_address, status)
         VALUES (?, ?, ?, ?, ?, 'pending')
-      `)
+      `
+      )
       .bind(
         orderData.user_id,
         totalAmount,
@@ -556,11 +579,13 @@ async function createOrderInDB(orderData, db) {
     // Create order items
     for (const item of orderData.items) {
       await db
-        .prepare(`
-          INSERT INTO order_items 
+        .prepare(
+          `
+          INSERT INTO order_items
           (order_id, product_id, quantity, price, size, color)
           VALUES (?, ?, ?, ?, ?, ?)
-        `)
+        `
+        )
         .bind(
           orderId,
           item.product_id,
@@ -573,23 +598,25 @@ async function createOrderInDB(orderData, db) {
 
       // Update product stock
       await db
-        .prepare(`
-          UPDATE products 
+        .prepare(
+          `
+          UPDATE products
           SET stock_quantity = stock_quantity - ?
           WHERE id = ? AND stock_quantity >= ?
-        `)
+        `
+        )
         .bind(item.quantity, item.product_id, item.quantity)
         .run();
     }
 
-    return { 
-      success: true, 
+    return {
+      success: true,
       id: orderId,
       total_amount: totalAmount,
-      status: 'pending'
+      status: "pending",
     };
   } catch (error) {
-    console.error('Create order error:', error.message);
+    console.error("Create order error:", error.message);
     return { success: false, error: error.message };
   }
 }
@@ -599,7 +626,7 @@ async function clearCartInKV(cartId, kv) {
     await kv.delete(`cart:${cartId}`);
     return { success: true };
   } catch (error) {
-    console.error('Clear cart error:', error.message);
+    console.error("Clear cart error:", error.message);
     return { success: false, error: error.message };
   }
 }
@@ -607,7 +634,8 @@ async function clearCartInKV(cartId, kv) {
 async function getUserOrdersFromDB(userId, db) {
   try {
     const orders = await db
-      .prepare(`
+      .prepare(
+        `
         SELECT o.*, GROUP_CONCAT(
           json_object(
             'product_id', oi.product_id,
@@ -622,21 +650,24 @@ async function getUserOrdersFromDB(userId, db) {
         WHERE o.user_id = ?
         GROUP BY o.id
         ORDER BY o.created_at DESC
-      `)
+      `
+      )
       .bind(userId)
       .all();
 
     return {
       success: true,
-      orders: orders.results.map(order => ({
+      orders: orders.results.map((order) => ({
         ...order,
-        items: order.items ? order.items.split(',').map(item => JSON.parse(item)) : [],
+        items: order.items
+          ? order.items.split(",").map((item) => JSON.parse(item))
+          : [],
         shipping_address: JSON.parse(order.shipping_address),
-        billing_address: JSON.parse(order.billing_address)
-      }))
+        billing_address: JSON.parse(order.billing_address),
+      })),
     };
   } catch (error) {
-    console.error('Get user orders error:', error.message);
+    console.error("Get user orders error:", error.message);
     return { success: false, error: error.message, orders: [] };
   }
 }
@@ -653,18 +684,18 @@ async function authenticateUser(loginData, db) {
 
     // Get user from database
     const user = await db
-      .prepare('SELECT * FROM users WHERE email = ?')
+      .prepare("SELECT * FROM users WHERE email = ?")
       .bind(emailValidation.value)
       .first();
 
     if (!user) {
-      return { success: false, error: 'Invalid credentials' };
+      return { success: false, error: "Invalid credentials" };
     }
 
     // Verify password
     const passwordValid = await verifyPassword(password, user.password_hash);
     if (!passwordValid) {
-      return { success: false, error: 'Invalid credentials' };
+      return { success: false, error: "Invalid credentials" };
     }
 
     // Generate JWT token
@@ -672,29 +703,36 @@ async function authenticateUser(loginData, db) {
     const token = await jwt.generateToken({
       userId: user.id,
       email: user.email,
-      isAdmin: user.email === 'admin@e-commerce-369.com' // Simple admin check
+      isAdmin: user.email === "admin@e-commerce-369.com", // Simple admin check
     });
 
-    return { 
-      success: true, 
+    return {
+      success: true,
       token,
       user: {
         id: user.id,
         email: user.email,
         first_name: user.first_name,
         last_name: user.last_name,
-        preferred_language: user.preferred_language
-      }
+        preferred_language: user.preferred_language,
+      },
     };
   } catch (error) {
-    console.error('Authentication error:', error.message);
-    return { success: false, error: 'Authentication failed' };
+    console.error("Authentication error:", error.message);
+    return { success: false, error: "Authentication failed" };
   }
 }
 
 async function createUser(userData, db) {
   try {
-    const { email, password, first_name, last_name, phone, preferred_language = 'ar' } = userData;
+    const {
+      email,
+      password,
+      first_name,
+      last_name,
+      phone,
+      preferred_language = "ar",
+    } = userData;
 
     // Validate inputs
     const emailValidation = validateEmail(email);
@@ -709,12 +747,12 @@ async function createUser(userData, db) {
 
     // Check if user already exists
     const existingUser = await db
-      .prepare('SELECT id FROM users WHERE email = ?')
+      .prepare("SELECT id FROM users WHERE email = ?")
       .bind(emailValidation.value)
       .first();
 
     if (existingUser) {
-      return { success: false, error: 'User already exists' };
+      return { success: false, error: "User already exists" };
     }
 
     // Hash password
@@ -722,49 +760,53 @@ async function createUser(userData, db) {
 
     // Create user
     const result = await db
-      .prepare(`
-        INSERT INTO users 
+      .prepare(
+        `
+        INSERT INTO users
         (email, password_hash, first_name, last_name, phone, preferred_language)
         VALUES (?, ?, ?, ?, ?, ?)
-      `)
+      `
+      )
       .bind(
         emailValidation.value,
         passwordHash,
         sanitizeInput(first_name),
         sanitizeInput(last_name),
-        sanitizeInput(phone || ''),
+        sanitizeInput(phone || ""),
         preferred_language
       )
       .run();
 
-    return { 
-      success: true, 
+    return {
+      success: true,
       id: result.meta.last_row_id,
-      message: 'User created successfully'
+      message: "User created successfully",
     };
   } catch (error) {
-    console.error('Create user error:', error.message);
-    return { success: false, error: 'Failed to create user' };
+    console.error("Create user error:", error.message);
+    return { success: false, error: "Failed to create user" };
   }
 }
 
 async function getUserProfile(userId, db) {
   try {
     const user = await db
-      .prepare(`
+      .prepare(
+        `
         SELECT id, email, first_name, last_name, phone, preferred_language, created_at
         FROM users WHERE id = ?
-      `)
+      `
+      )
       .bind(userId)
       .first();
 
     if (!user) {
-      return { success: false, error: 'User not found' };
+      return { success: false, error: "User not found" };
     }
 
     return { success: true, user };
   } catch (error) {
-    console.error('Get user profile error:', error.message);
-    return { success: false, error: 'Failed to get user profile' };
+    console.error("Get user profile error:", error.message);
+    return { success: false, error: "Failed to get user profile" };
   }
 }
