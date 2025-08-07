@@ -1,28 +1,42 @@
 {
   "name": "e-commerce-369",
   "version": "1.0.0",
-  "description": "Saudi market-focused women's clothing e-commerce platform",
-  "main": "index.js",
+  "description": "Saudi market-focused women's clothing e-commerce platform built with Next.js",
+  "private": true,
   "scripts": {
-    "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
-    "dev:frontend": "cd frontend && npm run dev",
-    "dev:backend": "cd backend && npm run dev",
-    "build": "npm run build:frontend && npm run build:backend",
-    "build:frontend": "cd frontend && npm run build",
-    "build:backend": "cd backend && npm run build",
-    "start": "cd backend && npm start",
-    "install:all": "npm install && cd frontend && npm install && cd ../backend && npm install"
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "type-check": "tsc --noEmit"
   },
   "keywords": [
     "e-commerce",
     "saudi",
     "women-clothing",
     "arabic",
-    "payment-integration"
+    "payment-integration",
+    "nextjs",
+    "typescript",
+    "tailwindcss"
   ],
   "author": "Mohamed El Fadil Abuagla",
   "license": "MIT",
+  "dependencies": {
+    "next": "^15.4.6",
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1"
+  },
   "devDependencies": {
-    "concurrently": "^8.2.2"
+    "@tailwindcss/postcss": "^4.1.11",
+    "@types/node": "^24.2.0",
+    "@types/react": "^19.1.9",
+    "@types/react-dom": "^19.1.7",
+    "autoprefixer": "^10.4.21",
+    "eslint": "^9.32.0",
+    "eslint-config-next": "^15.4.6",
+    "postcss": "^8.5.6",
+    "tailwindcss": "^4.1.11",
+    "typescript": "^5.9.2"
   }
 }
