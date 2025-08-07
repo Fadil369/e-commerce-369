@@ -1,13 +1,14 @@
 import LanguageSwitcher from "@/components/LanguageSwitcher";
-import { useTranslations } from "next-intl";
+import { getTranslations } from "next-intl/server";
 
 interface HomePageProps {
   params: Promise<{ locale: string }>;
 }
 
-export default function HomePage(props: HomePageProps) {
-  const t = useTranslations("common");
-  const tHome = useTranslations("home");
+export default async function HomePage(props: HomePageProps) {
+  const params = await props.params;
+  const t = await getTranslations("common");
+  const tHome = await getTranslations("home");
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-rose-50 via-white to-purple-50">

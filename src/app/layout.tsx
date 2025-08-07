@@ -1,11 +1,21 @@
-import { ReactNode } from 'react';
+import { ReactNode } from "react";
 
 type Props = {
-  children: ReactNode;
+  readonly children: ReactNode;
 };
 
-// Since we're using the `[locale]` folder pattern,
-// this layout only renders for requests that don't match any locale
-export default function RootLayout({ children }: Props) {
-  return children;
+export const metadata = {
+  title: "E-Commerce 369 - Saudi Women's Fashion",
+  description:
+    "Leading e-commerce platform for women's fashion in Saudi Arabia",
+};
+
+// Root layout that provides basic HTML structure
+// The middleware will handle locale redirects
+export default function RootLayout({ children }: Readonly<Props>) {
+  return (
+    <html lang="en">
+      <body>{children}</body>
+    </html>
+  );
 }
