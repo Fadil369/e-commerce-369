@@ -1,0 +1,134 @@
+{
+  "app": {
+    "title": "التجارة الإلكترونية 369",
+    "subtitle": "أزياء نسائية سعودية",
+    "loading": "جاري التحميل...",
+    "error": "حدث خطأ ما",
+    "retry": "حاول مرة أخرى"
+  },
+  "navigation": {
+    "home": "الرئيسية",
+    "products": "المنتجات",
+    "categories": "الأقسام",
+    "cart": "السلة",
+    "account": "حسابي",
+    "login": "تسجيل الدخول",
+    "register": "إنشاء حساب",
+    "logout": "تسجيل الخروج",
+    "search": "البحث عن المنتجات..."
+  },
+  "categories": {
+    "abayas": "العباءات",
+    "dresses": "الفساتين",
+    "tops": "البلوزات",
+    "hijabs": "الحجاب",
+    "accessories": "الإكسسوارات",
+    "shoes": "الأحذية",
+    "bags": "الحقائب",
+    "jewelry": "المجوهرات",
+    "traditional": "الأزياء التراثية",
+    "modest-wear": "الأزياء المحتشمة"
+  },
+  "product": {
+    "details": "تفاصيل المنتج",
+    "price": "السعر",
+    "size": "المقاس",
+    "color": "اللون",
+    "quantity": "الكمية",
+    "addToCart": "إضافة للسلة",
+    "buyNow": "اشتري الآن",
+    "inStock": "متوفر",
+    "outOfStock": "غير متوفر",
+    "description": "الوصف",
+    "features": "المميزات",
+    "careInstructions": "تعليمات العناية",
+    "reviews": "التقييمات",
+    "rating": "التقييم"
+  },
+  "cart": {
+    "title": "سلة التسوق",
+    "empty": "سلة التسوق فارغة",
+    "total": "المجموع",
+    "subtotal": "المجموع الفرعي",
+    "shipping": "الشحن",
+    "tax": "الضريبة (ضريبة القيمة المضافة)",
+    "checkout": "إتمام الطلب",
+    "continueShopping": "متابعة التسوق",
+    "remove": "إزالة",
+    "update": "تحديث"
+  },
+  "checkout": {
+    "title": "إتمام الطلب",
+    "shippingAddress": "عنوان الشحن",
+    "paymentMethod": "طريقة الدفع",
+    "orderSummary": "ملخص الطلب",
+    "placeOrder": "تأكيد الطلب",
+    "processing": "جاري المعالجة..."
+  },
+  "payment": {
+    "methods": {
+      "stripe": "بطاقة ائتمان/خصم",
+      "paypal": "باي بال",
+      "mada": "مدى",
+      "stc_pay": "STC Pay"
+    },
+    "success": "تم الدفع بنجاح",
+    "failed": "فشل في الدفع",
+    "processing": "جاري معالجة الدفع..."
+  },
+  "account": {
+    "profile": "الملف الشخصي",
+    "orders": "الطلبات",
+    "addresses": "العناوين",
+    "preferences": "التفضيلات",
+    "changePassword": "تغيير كلمة المرور"
+  },
+  "auth": {
+    "login": {
+      "title": "تسجيل الدخول",
+      "email": "البريد الإلكتروني",
+      "password": "كلمة المرور",
+      "submit": "تسجيل الدخول",
+      "forgotPassword": "نسيت كلمة المرور؟",
+      "noAccount": "ليس لديك حساب؟",
+      "signUp": "إنشاء حساب"
+    },
+    "register": {
+      "title": "إنشاء حساب جديد",
+      "firstName": "الاسم الأول",
+      "lastName": "اسم العائلة",
+      "email": "البريد الإلكتروني",
+      "phone": "رقم الهاتف",
+      "password": "كلمة المرور",
+      "confirmPassword": "تأكيد كلمة المرور",
+      "submit": "إنشاء حساب",
+      "haveAccount": "لديك حساب بالفعل؟",
+      "signIn": "تسجيل الدخول"
+    }
+  },
+  "common": {
+    "save": "حفظ",
+    "cancel": "إلغاء",
+    "edit": "تعديل",
+    "delete": "حذف",
+    "confirm": "تأكيد",
+    "yes": "نعم",
+    "no": "لا",
+    "next": "التالي",
+    "previous": "السابق",
+    "close": "إغلاق",
+    "ok": "موافق"
+  },
+  "currency": {
+    "sar": "ر.س",
+    "symbol": "ر.س"
+  },
+  "footer": {
+    "aboutUs": "من نحن",
+    "contactUs": "اتصل بنا",
+    "privacyPolicy": "سياسة الخصوصية",
+    "termsOfService": "شروط الخدمة",
+    "customerService": "خدمة العملاء",
+    "followUs": "تابعنا"
+  }
+}

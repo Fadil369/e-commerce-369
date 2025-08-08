@@ -1,0 +1,62 @@
+# Cloudflare Pages Configuration for E-Commerce 369
+name = "e-commerce-369"
+compatibility_date = "2024-12-01"
+pages_build_output_dir = ".next"
+
+# Basic D1 database binding for schema setup
+[[d1_databases]]
+binding = "DB"
+database_name = "brainsait-db"
+database_id = "79e8eb7a-1ada-4016-b51c-2cc631405467"
+
+[env.production]
+name = "e-commerce-369"
+compatibility_date = "2024-12-01"
+
+[env.preview]
+name = "e-commerce-369-preview"
+compatibility_date = "2024-12-01"
+
+# Environment variables for production
+[env.production.vars]
+NODE_ENV = "production"
+NEXT_PUBLIC_SITE_URL = "https://e-commerce-369.pages.dev"
+NEXT_PUBLIC_API_URL = "https://e-commerce-369.pages.dev"
+
+# Environment variables for preview
+[env.preview.vars]
+NODE_ENV = "preview"
+NEXT_PUBLIC_SITE_URL = "https://e-commerce-369-preview.pages.dev"
+NEXT_PUBLIC_API_URL = "https://e-commerce-369-preview.pages.dev"
+
+# KV namespaces for session storage and caching
+[[env.production.kv_namespaces]]
+binding = "SESSIONS"
+id = "7cc8d27d9d334ad3b014328dc743c106"
+preview_id = "7cc8d27d9d334ad3b014328dc743c106"
+
+[[env.production.kv_namespaces]]
+binding = "CACHE"
+id = "35b31bbbdb6340eaaf79cbd9c10ec958"
+preview_id = "35b31bbbdb6340eaaf79cbd9c10ec958"
+
+[[env.preview.kv_namespaces]]
+binding = "SESSIONS"
+id = "7cc8d27d9d334ad3b014328dc743c106"
+preview_id = "7cc8d27d9d334ad3b014328dc743c106"
+
+[[env.preview.kv_namespaces]]
+binding = "CACHE"
+id = "35b31bbbdb6340eaaf79cbd9c10ec958"
+preview_id = "35b31bbbdb6340eaaf79cbd9c10ec958"
+
+# D1 Database for product data and user management
+[[env.production.d1_databases]]
+binding = "DB"
+database_name = "brainsait-db"
+database_id = "79e8eb7a-1ada-4016-b51c-2cc631405467"
+
+[[env.preview.d1_databases]]
+binding = "DB"
+database_name = "brainsait-db"
+database_id = "79e8eb7a-1ada-4016-b51c-2cc631405467"

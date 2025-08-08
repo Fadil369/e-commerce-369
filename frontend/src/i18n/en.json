@@ -1,0 +1,134 @@
+{
+  "app": {
+    "title": "E-Commerce 369",
+    "subtitle": "Saudi Women's Fashion",
+    "loading": "Loading...",
+    "error": "Something went wrong",
+    "retry": "Try Again"
+  },
+  "navigation": {
+    "home": "Home",
+    "products": "Products",
+    "categories": "Categories",
+    "cart": "Cart",
+    "account": "Account",
+    "login": "Login",
+    "register": "Register",
+    "logout": "Logout",
+    "search": "Search products..."
+  },
+  "categories": {
+    "abayas": "Abayas",
+    "dresses": "Dresses",
+    "tops": "Tops",
+    "hijabs": "Hijabs",
+    "accessories": "Accessories",
+    "shoes": "Shoes",
+    "bags": "Bags",
+    "jewelry": "Jewelry",
+    "traditional": "Traditional",
+    "modest-wear": "Modest Wear"
+  },
+  "product": {
+    "details": "Product Details",
+    "price": "Price",
+    "size": "Size",
+    "color": "Color",
+    "quantity": "Quantity",
+    "addToCart": "Add to Cart",
+    "buyNow": "Buy Now",
+    "inStock": "In Stock",
+    "outOfStock": "Out of Stock",
+    "description": "Description",
+    "features": "Features",
+    "careInstructions": "Care Instructions",
+    "reviews": "Reviews",
+    "rating": "Rating"
+  },
+  "cart": {
+    "title": "Shopping Cart",
+    "empty": "Your cart is empty",
+    "total": "Total",
+    "subtotal": "Subtotal",
+    "shipping": "Shipping",
+    "tax": "Tax (VAT)",
+    "checkout": "Checkout",
+    "continueShopping": "Continue Shopping",
+    "remove": "Remove",
+    "update": "Update"
+  },
+  "checkout": {
+    "title": "Checkout",
+    "shippingAddress": "Shipping Address",
+    "paymentMethod": "Payment Method",
+    "orderSummary": "Order Summary",
+    "placeOrder": "Place Order",
+    "processing": "Processing..."
+  },
+  "payment": {
+    "methods": {
+      "stripe": "Credit/Debit Card",
+      "paypal": "PayPal",
+      "mada": "MADA",
+      "stc_pay": "STC Pay"
+    },
+    "success": "Payment Successful",
+    "failed": "Payment Failed",
+    "processing": "Processing Payment..."
+  },
+  "account": {
+    "profile": "Profile",
+    "orders": "Orders",
+    "addresses": "Addresses",
+    "preferences": "Preferences",
+    "changePassword": "Change Password"
+  },
+  "auth": {
+    "login": {
+      "title": "Login",
+      "email": "Email",
+      "password": "Password",
+      "submit": "Login",
+      "forgotPassword": "Forgot Password?",
+      "noAccount": "Don't have an account?",
+      "signUp": "Sign Up"
+    },
+    "register": {
+      "title": "Create Account",
+      "firstName": "First Name",
+      "lastName": "Last Name",
+      "email": "Email",
+      "phone": "Phone Number",
+      "password": "Password",
+      "confirmPassword": "Confirm Password",
+      "submit": "Create Account",
+      "haveAccount": "Already have an account?",
+      "signIn": "Sign In"
+    }
+  },
+  "common": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "edit": "Edit",
+    "delete": "Delete",
+    "confirm": "Confirm",
+    "yes": "Yes",
+    "no": "No",
+    "next": "Next",
+    "previous": "Previous",
+    "close": "Close",
+    "ok": "OK"
+  },
+  "currency": {
+    "sar": "SAR",
+    "symbol": "ر.س"
+  },
+  "footer": {
+    "aboutUs": "About Us",
+    "contactUs": "Contact Us",
+    "privacyPolicy": "Privacy Policy",
+    "termsOfService": "Terms of Service",
+    "customerService": "Customer Service",
+    "followUs": "Follow Us"
+  }
+}
